@@ -5,7 +5,6 @@ namespace App\Livewire\Project;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Project;
-use Illuminate\Support\Facades\Storage;
 
 class ProjectCreate extends Component
 {
@@ -19,7 +18,7 @@ class ProjectCreate extends Component
     protected $rules = [
         'project_name' => 'required|string|max:255',
         'project_description' => 'required|string',
-        'image_url' => 'nullable|image|max:2048', // 2MB máximo
+        'image_url' => 'required|image|max:2048', // 2MB máximo
     ];
 
     public function saveProject()
