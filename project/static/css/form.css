@@ -1,0 +1,99 @@
+.form-content {
+    display: flex;
+    padding: 50px;
+    justify-content: center;
+    align-items: center;
+    background-color: #f7f7f7;
+}
+
+form {
+    background: #fff;                /* Fondo blanco */
+    padding: 30px;
+    border-radius: 10px;             /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 100%;
+    max-width: 600px;                /* Limita el ancho máximo del formulario */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;  /* Efecto suave en el borde */
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="file"] {
+    padding: 8px;
+}
+
+button.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button.submit-button:hover {
+    background-color: #0056b3;   /* Cambio de color en hover */
+}
+
+/* Estilo para el campo de entrada cuando está enfocado */
+input[type="text"]:focus,
+textarea:focus,
+input[type="file"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Estilo de texto dentro de los campos */
+input::placeholder,
+textarea::placeholder {
+    color: #aaa;
+}
+
+/* Estilo para los mensajes */
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.alert.success {
+    background-color: #4CAF50; /* Verde para éxito */
+    color: white;
+}
+
+.alert.error {
+    background-color: #f44336; /* Rojo para error */
+    color: white;
+}

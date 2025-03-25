@@ -1,0 +1,34 @@
+{% include 'app.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+{% block content %}
+<div class="form-content">
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            {{ form.project_name.label }}
+            {{ form.project_name }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.project_description.label }}
+            {{ form.project_description }}
+        </div>
+
+        <div class="form-group">
+            {{ form.project_image_url.label }}
+            {{ form.project_image_url }}
+        </div>
+
+        <button type="submit" class="submit-button">Submit</button>
+    </form>
+</div>
+{% endblock %}
