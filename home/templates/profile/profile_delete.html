@@ -1,0 +1,21 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% load i18n %}
+{% load components %}
+
+{% block static %}
+    <link rel="stylesheet" href="{% static 'css/basic_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+{% card _("Delete User") %}
+<form method="post">
+    {% csrf_token %}
+    <p class="card-text">{% trans "Are you sure you want to delete your account?" %}</p>
+    <div class="form-actions">
+        <button type="submit" class="sub-button">{% trans "Delete" %}</button>
+            <a href="{% url 'profile' %}" class="sub-button">{% trans "Back" %}</a>
+    </div>
+</form>
+{% endcard %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% load components %}
+{% load i18n %}
+
+{% block static %}
+  <link rel="stylesheet" href="{% static 'css/basic_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+{% card _("Set new password") %}
+    {% if validlink %}
+        <p>{% trans "Enter your new password below:" %}</p>
+        <form method="post" class="form-control">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <div class="form-label">{{ form.new_password1.label_tag }}</div>
+                    <div class="form-input">{{ form.new_password1 }}</div>
+                    {% if form.new_password1.errors %}
+                        <div class="field-error">
+                            {{ form.new_password1.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <div class="form-label">{{ form.new_password2.label_tag }}</div>
+                    <div class="form-input">{{ form.new_password2 }}</div>
+                    {% if form.new_password2.errors %}
+                        <div class="field-error">
+                            {{ form.new_password2.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-button">
+                <button type="submit" class="sub-button">{% trans "Change password" %}</button>
+            </div>
+        </form>
+    {% else %}
+        <p class="text-error">
+            {% trans "The password reset link is not valid. It may have already been used or expired." %}
+        </p>
+    {% endif %}
+{% endcard %}
+{% endblock %}

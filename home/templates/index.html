@@ -1,0 +1,19 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block static %}
+    <link rel="stylesheet" href="{% static 'css/basic_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<section class="content">
+    <div class="card">
+        <h2 class="card-text">{% blocktrans with username=request.user.username %}You are logged, {{ username }}</h2>{% endblocktrans %}
+    </div>
+</section>
+{% else %}
+    <h1>{% trans "hello welcome to turtle glade" %}</h1>
+{% endif %}
+{% endblock %}
