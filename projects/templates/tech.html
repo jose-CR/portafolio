@@ -1,0 +1,38 @@
+{% extends 'layouts/app.html' %}
+
+{% block content %}
+
+<div><a href="{% url 'create_tech' %}">create tecnology</a></div>
+
+<table>
+    <thead>
+        <tr>
+            <th>name</th>
+            <th>image</th>
+            <th>settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tech in technologies %}
+            <tr>
+                <td>{{ tech.name }}</td>
+                <td>
+                    {% if tech.image_technology %}
+                    <img src="{{ tech.image_technology.url }}" alt="{{ tech.name }}" />
+                    {% else %}
+                    sin imagen
+                    {% endif %}
+                </td>
+                <td>
+                    {% if request.user.is_authenticated %}
+                    <div><a href="{% url 'edit_tech' tech.id %}">editar</a></div>
+                    <div><a href="{% url 'delete_tech' tech.id %}">eliminar</a></div>
+                {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="2">No hay tecnologías registradas.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
