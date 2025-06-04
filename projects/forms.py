@@ -7,6 +7,19 @@ class CreationProjectForm(forms.ModelForm):
         fields = [
             'name', 'description', 'image_project', 'technologies'
         ]
+        widgets = {
+            'technologies': forms.CheckboxSelectMultiple()
+        }
+
+class EditProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = [
+            'name', 'description', 'image_project', 'technologies'
+        ]
+        widgets = {
+            'technologies': forms.CheckboxSelectMultiple()
+        }
 
 class CreationTecnologiesForm(forms.ModelForm):
     class Meta:
