@@ -38,9 +38,18 @@
   </div>
 
   <div class="form-group">
-      <div class="user-info-label">{{ label_email }}:</div>
-      <div class="user-info-value">{{ request.user.email }}</div>
-    </div>
+      <div class="user-info-label">{{ label_github }}:</div>
+      <div class="user-info-value">{{ request.user.github }}</div>
+  </div>
+
+  <div class="form-group">
+    <div class="user-info-label">{{ label_linkedin }}:</div>
+    <div class="user-info-value">{{ request.user.linkedin }}</div>
+  </div>
+
+  <div class="form-group">
+    <div class="user-info-label">{{ label_description }}:</div>
+    <div class="user-info-value">{{ request.user.description }}</div>
   </div>
 
   <div class="form-button">

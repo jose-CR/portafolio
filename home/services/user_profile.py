@@ -6,12 +6,12 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.utils.translation import gettext as _
-from django.contrib.auth.models import User
+from home.models import UserProfile
 from django.contrib.auth.decorators import login_required
 
 # Create perfil
 class ProfileCreateView(CreateView):
-    model = User
+    model = UserProfile
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy('app')
@@ -30,7 +30,7 @@ class ProfileCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = _('Register')
-        context['contents'] = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        context['contents'] = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'github', 'linkedin', 'description']
         context['content_button'] = _('Sing Up')
         return context
 
@@ -48,13 +48,16 @@ class Profile():
             'label_first_name': _('First name'),
             'label_last_name': _('Last name'),
             'label_email': _('Email'),
+            'label_description': _('description'),
+            'label_github': ('Github'),
+            'label_linkedin': ('Linkedin'),
         }
 
         return render(request, 'profile.html', context)
     
 # Update perfil
 class ProfileUpdateView(UpdateView):
-    model = User
+    model = UserProfile
     form_class = CustomUserChangeForm
     template_name = 'profile/profile_edit.html'
     success_url = reverse_lazy('profile')
@@ -72,18 +75,18 @@ class ProfileUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = _('Edit User')
-        context['contents'] = ['username', 'first_name', 'last_name', 'email']
+        context['contents'] = ['username', 'first_name', 'last_name', 'email', 'github', 'linkedin', 'description']
         context['content_button'] = _('Edit')
         return context
     
 # Delete perfil 
 class ProfileDeleteView(DeleteView):
-    model = User
+    model = UserProfile
     template_name = 'profile/profile_delete.html'
     success_url = reverse_lazy('app')
 
     def get_queryset(self):
-        return User.objects.filter(pk=self.request.user.pk)
+        return UserProfile.objects.filter(pk=self.request.user.pk)
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
