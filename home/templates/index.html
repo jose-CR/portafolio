@@ -16,33 +16,29 @@
 {% else %}
 <div class="bento-principal">
     <div class="bento-grid">
-        <div class="box large" style="background-image: url('ruta/imagen1.jpg');">
+        <a href="{% url 'about_me' %}" class="box large" style="background-image: url('ruta/imagen1.jpg');">
             <div class="text-bento">
                 <h1>Sobre mí</h1>
-                <p>Conoce quién soy</p>
             </div>
-        </div>
+        </a>
 
-        <div class="box medium" style="background-image: url('ruta/imagen2.jpg');">
+        <a href="{% url 'about_me' %}" class="box medium" style="background-image: url('ruta/imagen1.jpg');">
             <div class="text-bento">
                 <h1>Tecnologías</h1>
-                <p>Herramientas que uso</p>
             </div>
-        </div>
+        </a>
 
-        <div class="box medium" style="background-image: url('ruta/imagen3.jpg');">
+        <a href="{% url 'about_me' %}" class="box medium" style="background-image: url('ruta/imagen1.jpg');">
             <div class="text-bento">
                 <h1>Proyectos</h1>
-                <p>Algunos trabajos</p>
             </div>
-        </div>
+        </a>
 
-        <div class="box large" style="background-image: url('ruta/imagen4.jpg');">
+        <a href="{% url 'about_me' %}" class="box large" style="background-image: url('ruta/imagen1.jpg');">
             <div class="text-bento">
                 <h1>Contáctame</h1>
-                <p>Hablemos</p>
             </div>
-        </div>
+        </a>
     </div>
 </div>
 {% endif %}

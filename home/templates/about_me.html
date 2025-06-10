@@ -1,0 +1,76 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% load components %}
+
+{% block static %}
+    <link rel="stylesheet" href="{% static 'css/basic_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+{% card "a cerca de mí" %}
+
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam minima error, aspernatur voluptas, eius eum architecto ratione eaque, tempore facere.</p>
+
+{% endcard %}
+
+{% card "tecnologias y proyectos" %}
+<div x-data="{
+        techFilter: [],
+        toggleFilter(id) {
+            if (this.techFilter.includes(id)) {
+                this.techFilter = this.techFilter.filter(i => i !== id)
+            } else {
+                this.techFilter.push(id)
+            }
+        },
+        matches(projectTechIds) {
+            if (this.techFilter.length === 0) return true
+            return this.techFilter.some(id => projectTechIds.includes(id))
+        }
+    }" class="space-y-8">
+    
+    <!-- Filtros -->
+    <div class="flex flex-wrap gap-3">
+        {% for tech in technologies %}
+        <button
+            type="button"
+            class="px-3 py-1 rounded bg-gray-700 text-white flex items-center gap-2"
+            :class="{ 'bg-green-500': techFilter.includes({{ tech.id }}) }"
+            @click="toggleFilter({{ tech.id }})"
+        >
+            {% if tech.image_technology %}
+            <img src="{{ tech.image_technology.url }}" alt="{{ tech.name }}" class="w-6 h-6 rounded" width="30px">
+            {% endif %}
+            {{ tech.name }}
+        </button>
+        {% endfor %}
+    </div>
+
+    <!-- Proyectos -->
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for project in projects %}
+        <template x-if="matches({{ project.tech_ids|safe }})">
+            <div class="p-4 border rounded bg-gray-800 text-white">
+                {% if project.image_project %}
+                <img src="{{ project.image_project.url }}" alt="{{ project.name }}" class="w-full h-32 object-cover rounded mb-2" width="50px">
+                {% endif %}
+                <h2 class="text-xl font-bold">{{ project.name }}</h2>
+                <p class="mb-2">{{ project.description }}</p>
+
+                <div class="flex gap-2 flex-wrap">
+                    {% for tech in project.technologies.all %}
+                    <div class="flex items-center gap-1 text-sm bg-gray-700 px-2 py-1 rounded">
+                        {% if tech.image_technology %}
+                        <img src="{{ tech.image_technology.url }}" alt="{{ tech.name }}" class="w-4 h-4 rounded">
+                        {% endif %}
+                        <span>{{ tech.name }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </template>
+        {% endfor %}
+    </div>
+</div>
+{% endcard %}
+{% endblock %}

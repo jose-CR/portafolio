@@ -1,3 +1,8 @@
+# Entornos virtuale
 venv
+
+# Python
 __pycache__
+
+# Django
 db.sqlite3

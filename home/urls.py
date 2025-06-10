@@ -1,11 +1,12 @@
 from django.urls import path
-from .views import app
+from .views import app, About_Me
 from home.services.user_profile import ProfileCreateView, Profile, ProfileUpdateView, ProfileDeleteView
 from home.services.user_password import UserPasswordChange, UserPasswordReset, UserPasswordConfirm, UserPasswordComplete
 
 urlpatterns = [
     path('', app, name="app"),
     path('logout', Profile.exit, name="exit"),
+    path('about_me', About_Me.as_view(), name="about_me"),
     # CRUD Profile
     path('register/', ProfileCreateView.as_view(), name='register'),
     path('profile/', Profile.index ,name="profile"),
