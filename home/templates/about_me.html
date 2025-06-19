@@ -4,16 +4,22 @@
 
 {% block static %}
     <link rel="stylesheet" href="{% static 'css/basic_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about_me.css' %}">
 {% endblock %}
 
 {% block content %}
-{% card "a cerca de mí" %}
+{% card "sobre mí" %}
+{% if profile %}
+    <div class="about-me">
+        <div class="about-header">
+            <h2 class="username">Hola soy, {{ profile.username }}  {{ profile.last_name }}</h2>
+        </div>
 
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam minima error, aspernatur voluptas, eius eum architecto ratione eaque, tempore facere.</p>
-
+        <div class="description">{{ profile.description|safe }}</div>
+    </div>
+{% endif %}
 {% endcard %}
 
-{% card "tecnologias y proyectos" %}
 <div x-data="{
         techFilter: [],
         toggleFilter(id) {
@@ -27,50 +33,79 @@
             if (this.techFilter.length === 0) return true
             return this.techFilter.some(id => projectTechIds.includes(id))
         }
-    }" class="space-y-8">
-    
-    <!-- Filtros -->
-    <div class="flex flex-wrap gap-3">
-        {% for tech in technologies %}
-        <button
-            type="button"
-            class="px-3 py-1 rounded bg-gray-700 text-white flex items-center gap-2"
-            :class="{ 'bg-green-500': techFilter.includes({{ tech.id }}) }"
-            @click="toggleFilter({{ tech.id }})"
-        >
-            {% if tech.image_technology %}
-            <img src="{{ tech.image_technology.url }}" alt="{{ tech.name }}" class="w-6 h-6 rounded" width="30px">
-            {% endif %}
-            {{ tech.name }}
-        </button>
-        {% endfor %}
-    </div>
+    }" class="tech-projects-wrapper">
 
-    <!-- Proyectos -->
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {% for project in projects %}
-        <template x-if="matches({{ project.tech_ids|safe }})">
-            <div class="p-4 border rounded bg-gray-800 text-white">
-                {% if project.image_project %}
-                <img src="{{ project.image_project.url }}" alt="{{ project.name }}" class="w-full h-32 object-cover rounded mb-2" width="50px">
+    <!-- Sección de Tecnologías -->
+    <section class="technologies-section">
+        <h3 class="tech-title">Tecnologías</h3>
+        <div class="tech-buttons">
+            {% for tech in technologies %}
+            <button
+                type="button"
+                class="tech-button"
+                :class="{ 'active': techFilter.includes({{ tech.id }}) }"
+                @click="toggleFilter({{ tech.id }})"
+            >
+                {% if tech.image_technology %}
+                <img src="{{ tech.image_technology.url }}" alt="{{ tech.name }}" width="24" height="24">
                 {% endif %}
-                <h2 class="text-xl font-bold">{{ project.name }}</h2>
-                <p class="mb-2">{{ project.description }}</p>
+            </button>
+            {% endfor %}
+        </div>
+    </section>
 
-                <div class="flex gap-2 flex-wrap">
+    <!-- Sección de Proyectos -->
+    <section class="projects-section">
+        <h3 class="project-title">Proyectos</h3>
+        
+        <div class="project-card">
+            {% for project in projects %}
+            <template x-if="matches({{ project.tech_ids|safe }})">
+            <div class="column">
+                {% if project.image_project %}
+                <img src="{{ project.image_project.url }}" alt="{{ project.name }}" class="project-image">
+                {% endif %}
+                
+                <h4 class="project-name">{{ project.name }}</h4>
+                
+                <div class="project-tech-list">
                     {% for tech in project.technologies.all %}
-                    <div class="flex items-center gap-1 text-sm bg-gray-700 px-2 py-1 rounded">
+                    <span class="project-tech-item">
                         {% if tech.image_technology %}
-                        <img src="{{ tech.image_technology.url }}" alt="{{ tech.name }}" class="w-4 h-4 rounded">
+                        <img src="{{ tech.image_technology.url }}" alt="{{ tech.name }}" width="20" height="20">
                         {% endif %}
-                        <span>{{ tech.name }}</span>
-                    </div>
+                    </span>
                     {% endfor %}
                 </div>
+                
+                <button class="project-button open-dialog" data-dialog-index="{{ forloop.counter0 }}">Ver más</button>
+
+                <dialog class="project-dialog" data-dialog-index="{{ forloop.counter0 }}" closedby="any">
+                    <h2>{{ project.name }}</h2>
+                    <p>Este es un diálogo para el proyecto {{ project.name }}</p>
+                    <form method="dialog">
+                        <button>Cerrar</button>
+                    </form>
+                </dialog>
             </div>
-        </template>
-        {% endfor %}
-    </div>
+            </template>
+            {% endfor %}
+        </div>
+    </section>
 </div>
-{% endcard %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const openButtons = document.querySelectorAll(".open-dialog");
+        const dialogs = document.querySelectorAll(".project-dialog");
+    
+        openButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const index = button.getAttribute("data-dialog-index");
+                const dialog = document.querySelector(`.project-dialog[data-dialog-index="${index}"]`);
+                if (dialog) dialog.showModal();
+            });
+        });
+    });
+</script>
 {% endblock %}

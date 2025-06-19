@@ -20,4 +20,5 @@ class About_Me(TemplateView):
 
         context['projects'] = projects
         context['technologies'] = Technology.objects.all()
+        context['profile'] = self.request.user
         return context
