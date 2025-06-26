@@ -12,7 +12,15 @@
     --link-hover-bg: rgba(255, 255, 255, 0.15);
 }
 
+.main-content {
+    flex: 1;
+    min-height: 70vh;
+}
+
 .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     background-color: var(--navbar-color);
     padding: 1rem;
     display: flex;
@@ -55,6 +63,62 @@
     border-radius: 5px;
 }
 
+.site-footer {
+    background-color: #111; /* negro */
+    color: #ccc; /* gris claro */
+    padding: 40px 20px 20px;
+    font-size: 0.95rem;
+    border-top: 3px solid #0f0; /* verde */
+    text-align: center;
+}
+  
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+  
+.footer-columns {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+  
+.footer-column {
+    min-width: 200px;
+}
+  
+.footer-column h4 {
+    color: #0f0;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+  
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+  
+.footer-column li {
+    margin-bottom: 8px;
+}
+  
+.footer-column a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+  
+.footer-column a:hover {
+    color: #0f0;
+}
+  
+.footer-bottom {
+    margin-top: 40px;
+    font-size: 0.85rem;
+    color: #777;
+}
 
 @media (max-width: 800px) {
     .navbar-header {

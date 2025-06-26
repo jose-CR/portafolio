@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import app, About_Me
+from .views import app, About_Me, Contact_Me, mark_as_seen, delete_contact_ajax
 from home.services.user_profile import ProfileCreateView, Profile, ProfileUpdateView, ProfileDeleteView
 from home.services.user_password import UserPasswordChange, UserPasswordReset, UserPasswordConfirm, UserPasswordComplete
 
@@ -7,6 +7,9 @@ urlpatterns = [
     path('', app, name="app"),
     path('logout', Profile.exit, name="exit"),
     path('about_me', About_Me.as_view(), name="about_me"),
+    path('contact_me', Contact_Me.as_view(), name="contact_me"),
+    path("mark-as-seen/", mark_as_seen, name="mark_as_seen"),
+    path('delete-contact/', delete_contact_ajax, name='delete_contact_ajax'),
     # CRUD Profile
     path('register/', ProfileCreateView.as_view(), name='register'),
     path('profile/', Profile.index ,name="profile"),

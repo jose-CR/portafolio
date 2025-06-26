@@ -1,0 +1,139 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+
+{% block static %}
+    <link rel="stylesheet" href="{% static 'css/basic_styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Mensaje</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contact in contacts %}
+        <tr x-data="{
+            open: false,
+            init() {
+                this.$watch('open', value => {
+                    if (value) {
+                        this.$refs.dialog.showModal();
+                    } else {
+                        this.$refs.dialog.close();
+                    }
+                });
+            }
+        }" id="row-{{ contact.id }}">
+            <td>{{ contact.user_name }}</td>
+            <td>{{ contact.user_email }}</td>
+            <td>{{ contact.user_message|truncatechars:30 }}</td>
+            <td id="estado-{{ contact.id }}">
+                {% if contact.active %}
+                No visto
+                {% else %}
+                Visto
+                {% endif %}
+            </td>
+            <td>{{ contact.created_at }}</td>
+            <td>
+                <button
+                @click="
+                    open = true;
+                    fetch('{% url 'mark_as_seen' %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        body: 'id={{ contact.id }}'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'ok') {
+                            document.getElementById('estado-{{ contact.id }}').textContent = 'Visto';
+                        }
+                    });
+                ">
+                Ver más
+            </button>
+    
+                <dialog x-ref="dialog" id="dialog-{{ contact.id }}">
+                    <div>
+                        <h3>Mensaje de {{ contact.user_name }}</h3>
+                        <p class="dialog-message">{{ contact.user_message }}</p>
+                        <form method="dialog">
+                            <button type="submit" @click="open = false">Cerrar</button>
+                        </form>
+                        <button @click.prevent="deleteContact({{ contact.id }})" class="delete-btn">
+                            Eliminar
+                        </button>
+                    </div>
+                </dialog>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay mensajes</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".open-dialog").forEach(button => {
+            button.addEventListener("click", () => {
+                const contactId = button.dataset.id;
+                const message = button.dataset.message;
+                const dialog = document.getElementById(`dialog-${contactId}`);
+                dialog.querySelector(".dialog-message").innerHTML = message;
+                dialog.showModal();
+    
+                fetch("{% url 'mark_as_seen' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `id=${contactId}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "ok") {
+                        document.getElementById(`estado-${contactId}`).textContent = "Visto";
+                    }
+                });
+            });
+        });
+    });
+</script>
+<script>
+    function deleteContact(id) {
+        if (!confirm("¿Estás seguro de eliminar este mensaje?")) return;
+
+        fetch("{% url 'delete_contact_ajax' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: `id=${id}`,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "ok") {
+                document.getElementById(`row-${id}`).remove();
+            } else {
+                alert("No se pudo eliminar el mensaje.");
+            }
+        })
+        .catch(() => alert("Ocurrió un error en la solicitud."));
+    }
+</script>
+{% endblock %}
